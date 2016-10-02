@@ -167,6 +167,7 @@ public:
 	{
 		return new spell_sha_ancestral_guidance_heal_SpellScript();
 	}
+
 };
 
 // 2825 - Bloodlust
