@@ -1534,8 +1534,6 @@ void World::SetInitialWorldSettings()
     //Load weighted graph on taxi nodes path
     sTaxiPathGraph.Initialize();
 
-    sSpellMgr->LoadPetFamilySpellsStore();
-
     std::unordered_map<uint32, std::vector<uint32>> mapData;
     for (MapEntry const* mapEntry : sMapStore)
     {
@@ -1561,6 +1559,9 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO("server.loading", "Loading SpellInfo custom attributes...");
     sSpellMgr->LoadSpellInfoCustomAttributes();
+
+    TC_LOG_INFO("server.loading", "Loading PetFamilySpellsStore Data...");
+    sSpellMgr->LoadPetFamilySpellsStore();
 
     TC_LOG_INFO("server.loading", "Loading GameObject models...");
     LoadGameObjectModelList(m_dataPath);
@@ -1937,6 +1938,9 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO("server.loading", "Loading faction change title pairs...");
     sObjectMgr->LoadFactionChangeTitles();
+
+    TC_LOG_INFO("server.loading", "Loading mount definitions...");
+    CollectionMgr::LoadMountDefinitions();
 
     TC_LOG_INFO("server.loading", "Loading GM bugs...");
     sSupportMgr->LoadBugTickets();
