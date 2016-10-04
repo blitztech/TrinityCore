@@ -2545,12 +2545,12 @@ struct SpellXSpellVisualEntry
 
 struct SummonPropertiesEntry
 {
-    uint32 ID;
-    uint32 Category;
-    uint32 Faction;
-    uint32 Type;
-    int32 Slot;
-    uint32 Flags;
+	uint32 ID;
+	uint32 Flags;
+	uint32 Category;
+	int32 Faction;
+	uint32 Type;
+	uint32 Slot;
 };
 
 #define TACTKEY_SIZE 16
