@@ -59,6 +59,7 @@ EndContentData */
 #include "Pet.h"
 #include "CreatureTextMgr.h"
 #include "SpellHistory.h"
+#include "BlackMarketMgr.h"
 
 /*########
 # npc_air_force_bots
@@ -2332,6 +2333,38 @@ public:
     };
 };
 
+#define GOSSIP_TEXT_EXP           14736
+#define GOSSIP_CHOOSE_FACTION     "I would like to choose my faction"
+
+class npc_Spirit_of_Master_Shang_Xi : public CreatureScript
+{
+public:
+	npc_Spirit_of_Master_Shang_Xi() : CreatureScript("npc_Spirit_of_Master_Shang_Xi") { }
+
+	bool OnGossipHello(Player* player, Creature* creature)
+	{
+		if (creature->IsQuestGiver())
+			player->PrepareQuestMenu(creature->GetGUID());
+
+		if (player->getRace() == RACE_PANDAREN_NEUTRAL)
+		{
+			if (player->GetQuestStatus(31450) == QUEST_STATUS_INCOMPLETE)
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_CHOOSE_FACTION, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+		}
+		player->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_EXP, creature->GetGUID());
+		return true;
+	}
+
+	bool OnGossipSelect(Player* player, Creature* /*creature*/, uint32 /*sender*/, uint32 action) override
+	{
+		if (action == GOSSIP_ACTION_INFO_DEF + 1)
+			player->ShowNeutralPlayerFactionSelectUI();
+
+		player->PlayerTalkClass->SendCloseGossip();
+		return true;
+	}
+};
+
 class npc_imp_in_a_ball : public CreatureScript
 {
 private:
@@ -2533,6 +2566,7 @@ void AddSC_npcs_special()
     new npc_locksmith();
     new npc_experience();
     new npc_firework();
+	new npc_Spirit_of_Master_Shang_Xi();
     new npc_spring_rabbit();
     new npc_imp_in_a_ball();
     new npc_train_wrecker();

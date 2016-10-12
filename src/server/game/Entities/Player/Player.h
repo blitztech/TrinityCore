@@ -2473,6 +2473,8 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
 
         void OnCombatExit();
 
+		void ShowNeutralPlayerFactionSelectUI();
+
         void CreateGarrison(uint32 garrSiteId);
         void DeleteGarrison();
         Garrison* GetGarrison() const { return _garrison.get(); }

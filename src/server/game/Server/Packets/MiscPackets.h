@@ -107,6 +107,14 @@ namespace WorldPackets
             bool SuppressChatLog = false;
         };
 
+		class SelectFactionOpcode final : public ClientPacket
+		{
+			public:
+				SelectFactionOpcode(WorldPacket&& packet) : ClientPacket(CMSG_NEUTRAL_PLAYER_SELECT_FACTION, std::move(packet)) { }
+			
+			void Read() override { }
+		};
+
         class SetSelection final : public ClientPacket
         {
         public:

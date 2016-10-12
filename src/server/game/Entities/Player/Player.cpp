@@ -24287,6 +24287,12 @@ void Player::SetMover(Unit* target)
     SendDirectMessage(packet.Write());
 }
 
+void Player::ShowNeutralPlayerFactionSelectUI()
+{
+	WorldPacket data(SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI);
+	GetSession()->SendPacket(&data);
+}
+
 void Player::UpdateZoneDependentAuras(uint32 newZone)
 {
     // Some spells applied at enter into zone (with subzones), aura removed in UpdateAreaDependentAuras that called always at zone->area update
