@@ -1116,6 +1116,46 @@ void WorldSession::HandleObjectUpdateRescuedOpcode(WorldPackets::Misc::ObjectUpd
     _player->m_clientGUIDs.insert(objectUpdateRescued.ObjectGUID);
 }
 
+// DestrinyFrame.xml : lua function NeutralPlayerSelectFaction
+#define JOIN_THE_ALLIANCE 1
+#define JOIN_THE_HORDE    0
+
+void WorldSession::HandleSelectFactionOpcode(WorldPacket& recvPacket)
+{
+	uint32 choice = recvPacket.read<uint32>();
+
+	if (_player->getRace() != RACE_PANDAREN_NEUTRAL)
+		return;
+
+	if (choice == JOIN_THE_HORDE)
+	{
+		_player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);
+		_player->setFactionForRace(RACE_PANDAREN_HORDE);
+		_player->SaveToDB();
+		WorldLocation location(1, 1366.730f, -4371.248f, 26.070f, 3.1266f);
+		_player->TeleportTo(location);
+		_player->SetHomebind(location, 363);
+		_player->LearnSpell(669, false); // Language Orcish
+		_player->LearnSpell(108127, false); // Language Pandaren
+	}
+	else if (choice == JOIN_THE_ALLIANCE)
+	{
+		_player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
+		_player->setFactionForRace(RACE_PANDAREN_ALLIANCE);
+		_player->SaveToDB();
+		WorldLocation location(0, -9096.236f, 411.380f, 92.257f, 3.649f);
+		_player->TeleportTo(location);
+		_player->SetHomebind(location, 9);
+		_player->LearnSpell(668, false); // Language Common
+		_player->LearnSpell(108127, false); // Language Pandaren
+	}
+
+	if (_player->GetQuestStatus(31450) == QUEST_STATUS_INCOMPLETE)
+		_player->KilledMonsterCredit(64594);
+
+	_player->SendMovieStart(116);
+}
+
 void WorldSession::HandleSaveCUFProfiles(WorldPackets::Misc::SaveCUFProfiles& packet)
 {
     if (packet.CUFProfiles.size() > MAX_CUF_PROFILES)

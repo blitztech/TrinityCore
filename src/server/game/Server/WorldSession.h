@@ -432,6 +432,7 @@ namespace WorldPackets
         class WorldTeleport;
         class MountSpecial;
         class SetTaxiBenchmarkMode;
+		class SelectFactionOpcode;
         class MountSetFavorite;
     }
 
@@ -1693,7 +1694,9 @@ class TC_GAME_API WorldSession
         void HandleUpdateListedAuctionableTokens(WorldPackets::Token::UpdateListedAuctionableTokens& updateListedAuctionableTokens);
         void HandleRequestWowTokenMarketPrice(WorldPackets::Token::RequestWowTokenMarketPrice& requestWowTokenMarketPrice);
 
-        // Compact Unit Frames (4.x)
+		void HandleSelectFactionOpcode(WorldPacket & recvPacket);
+
+		// Compact Unit Frames (4.x)
         void HandleSaveCUFProfiles(WorldPackets::Misc::SaveCUFProfiles& packet);
         void SendLoadCUFProfiles();
 

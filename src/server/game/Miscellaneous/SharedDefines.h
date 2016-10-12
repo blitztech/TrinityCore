@@ -122,11 +122,11 @@ enum Races
     //RACE_TAUNKA             = 19,
     //RACE_NORTHREND_SKELETON = 20,
     //RACE_ICE_TROLL          = 21,
-    RACE_WORGEN             = 22,
+    RACE_WORGEN				  = 22,
     //RACE_GILNEAN            = 23
-    RACE_PANDAREN_NEUTRAL   = 24,
-    RACE_PANDAREN_ALLIANCE  = 25,
-    RACE_PANDAREN_HORDE     = 26
+    RACE_PANDAREN_NEUTRAL	  = 24,
+    RACE_PANDAREN_ALLIANCE    = 25,
+    RACE_PANDAREN_HORDE       = 26
 };
 
 // max+1 for player race
