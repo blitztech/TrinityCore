@@ -178,7 +178,7 @@ struct ArtifactPowerEntry
     uint8 Flags;
     uint8 MaxRank;
     uint32 ID;
-    int32 RelicType;
+    uint32 RelicType;
 };
 
 struct ArtifactPowerLinkEntry
@@ -695,7 +695,7 @@ struct CriteriaTreeEntry
     uint16 Parent;
     uint16 Flags;
     uint8 Operator;
-    int32 OrderIndex;
+    uint32 OrderIndex;
 };
 
 struct CurrencyTypesEntry
@@ -784,7 +784,7 @@ struct DungeonEncounterEntry
     uint8 DifficultyID;
     uint8 Bit;
     uint8 Flags;
-    int32 OrderIndex;
+    uint32 OrderIndex;
 };
 
 struct DurabilityCostsEntry
@@ -810,8 +810,8 @@ struct EmotesEntry
     uint8 EmoteSpecProc;
     uint32 EmoteSpecProcParam;
     uint32 EmoteSoundID;
-    int32 ClassMask;
-    int32 RaceMask;
+    uint32 ClassMask;
+    uint32 RaceMask;
 };
 
 struct EmotesTextEntry
@@ -981,9 +981,9 @@ struct GarrBuildingEntry
     uint8 Flags;
     uint8 MaxShipments;
     uint8 GarrTypeID;
-    int32 BuildDuration;
+    uint32 BuildDuration;
     int32 CostCurrencyAmount;
-    int32 BonusAmount;
+    uint32 BonusAmount;
 };
 
 struct GarrBuildingPlotInstEntry
@@ -1452,7 +1452,7 @@ struct ItemSearchNameEntry
     uint8 RequiredExpansion;
     uint8 RequiredReputationRank;
     uint8 RequiredLevel;
-    int32 AllowableClass;
+    uint32 AllowableClass;
 };
 
 #define MAX_ITEM_SET_ITEMS 17
@@ -1930,7 +1930,7 @@ struct PlayerConditionEntry
     int8 PowerType;
     int8 PowerTypeComp;
     int8 PowerTypeValue;
-    int32 ClassMask;
+    uint32 ClassMask;
     uint32 LanguageID;
     uint32 MinFactionID[3];
     uint32 SpellID[4];
@@ -1944,7 +1944,7 @@ struct PlayerConditionEntry
     uint32 PhaseGroupID;
     uint32 MinAvgItemLevel;
     uint32 MaxAvgItemLevel;
-    int32 Unknown700[2];
+    uint32 Unknown700[2];
 };
 
 struct PowerDisplayEntry
@@ -1974,7 +1974,7 @@ struct PowerTypeEntry
     uint8 UIModifier;
 };
 
-struct PvpDifficultyEntry
+struct PvPDifficultyEntry
 {
     uint32 ID;
     uint16 MapID;
@@ -2092,7 +2092,7 @@ struct SkillLineAbilityEntry
     uint16 TradeSkillCategoryID;
     uint8 AcquireMethod;
     uint8 NumSkillUps;
-    int32 ClassMask;
+    uint32 ClassMask;
 };
 
 struct SkillRaceClassInfoEntry
@@ -2219,7 +2219,7 @@ struct SpellCategoryEntry
     uint8 Flags;
     uint8 UsesPerWeek;
     uint8 MaxCharges;
-    uint32 ChargeCategoryType;
+    uint32 Unk703;
 };
 
 struct SpellClassOptionsEntry
@@ -2264,9 +2264,9 @@ struct SpellEffectEntry
     uint32 Effect;
     uint32 EffectAura;
     uint32 EffectAuraPeriod;
-    int32 EffectBasePoints;
+    uint32 EffectBasePoints;
     uint32 EffectChainTargets;
-    int32 EffectDieSides;
+    uint32 EffectDieSides;
     uint32 EffectItemType;
     uint32 EffectMechanic;
     int32 EffectMiscValue;
@@ -2411,8 +2411,8 @@ struct SpellPowerEntry
     uint8 PowerIndex;
     uint8 PowerType;
     uint32 ID;
-    int32 ManaCostPerLevel;
-    int32 ManaCostPerSecond;
+    uint32 ManaCostPerLevel;
+    uint32 ManaCostPerSecond;
     uint32 ManaCostAdditional;                                      // Spell uses [ManaCost, ManaCost+ManaCostAdditional] power - affects tooltip parsing as multiplier on SpellEffectEntry::EffectPointsPerResource
                                                                     //   only SPELL_EFFECT_WEAPON_DAMAGE_NOSCHOOL, SPELL_EFFECT_WEAPON_PERCENT_DAMAGE, SPELL_EFFECT_WEAPON_DAMAGE, SPELL_EFFECT_NORMALIZED_WEAPON_DMG
     uint32 PowerDisplayID;
@@ -2549,7 +2549,7 @@ struct SummonPropertiesEntry
     uint32 Flags;
     uint32 Category;
     uint32 Faction;
-    int32 Type;
+    uint32 Type;
     int32 Slot;
 };
 
@@ -2835,12 +2835,12 @@ struct WorldMapOverlayEntry
     uint16 TextureHeight;
     uint32 MapAreaID;                                               // idx in WorldMapArea.dbc
     uint32 AreaID[MAX_WORLD_MAP_OVERLAY_AREA_IDX];
-    int32 OffsetX;
-    int32 OffsetY;
-    int32 HitRectTop;
-    int32 HitRectLeft;
-    int32 HitRectBottom;
-    int32 HitRectRight;
+    uint32 OffsetX;
+    uint32 OffsetY;
+    uint32 HitRectTop;
+    uint32 HitRectLeft;
+    uint32 HitRectBottom;
+    uint32 HitRectRight;
     uint32 PlayerConditionID;
     uint32 Flags;
 };

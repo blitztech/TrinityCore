@@ -99,8 +99,3 @@ uint32 DB2Meta::GetStringFieldCount(bool localizedOnly) const
 
     return stringFields;
 }
-
-DB2FieldMeta::DB2FieldMeta(bool isSigned, DBCFormer type, char const* name)
-    : IsSigned(isSigned), Type(type), Name(name)
-{
-}

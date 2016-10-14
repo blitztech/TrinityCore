@@ -3893,9 +3893,9 @@ void ObjectMgr::LoadQuests()
         } while (result->NextRow());
     }
 
-    // Load `quest_objectives`
+    // Load `quest_objectives` order by descending storage index to reduce resizes
     //                                   0   1        2     3             4         5       6      7                  8
-    result = WorldDatabase.Query("SELECT ID, QuestID, Type, StorageIndex, ObjectID, Amount, Flags, ProgressBarWeight, Description FROM quest_objectives ORDER BY StorageIndex ASC");
+    result = WorldDatabase.Query("SELECT ID, QuestID, Type, StorageIndex, ObjectID, Amount, Flags, ProgressBarWeight, Description FROM quest_objectives ORDER BY StorageIndex DESC");
 
     if (!result)
     {
