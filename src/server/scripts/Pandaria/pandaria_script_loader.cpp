@@ -20,7 +20,6 @@ void AddSC_boss_flameweaver_koegler();
 void AddSC_boss_houndmaster_braun();
 
 void AddSC_boss_brother_korloff();
-void AddSC_boss_high_inquisitor_whitemane();
 void AddSC_boss_thalnos_the_soulrender();
 
 void AddSC_boss_instructor_chillheart();
@@ -135,7 +134,6 @@ void AddPandariaScripts()
 
     /* Scarlet Monastery */
     AddSC_boss_brother_korloff();
-    AddSC_boss_high_inquisitor_whitemane();
     AddSC_boss_thalnos_the_soulrender();
 
     /* Scholomance */
