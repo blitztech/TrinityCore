@@ -97,7 +97,7 @@ class spell_dh_fel_rush : public SpellScriptLoader
                     if (!caster->IsFalling() || caster->IsInWater())
                     {
                         caster->CastSpell(caster, SPELL_FEL_RUSH_GROUND, true);
-                        caster->CastSpell(caster, SPELL_FEL_RUSH_DAMAGE, true);
+                        caster->CastSpell(caster->GetVictim(), SPELL_FEL_RUSH_DAMAGE, true);
                     }
             }
 
@@ -108,7 +108,7 @@ class spell_dh_fel_rush : public SpellScriptLoader
                     {
                         caster->SetDisableGravity(true);
                         caster->CastSpell(caster, SPELL_FEL_RUSH_AIR, true);
-                        caster->CastSpell(caster, SPELL_FEL_RUSH_DAMAGE, true);
+                        caster->CastSpell(caster->GetVictim(), SPELL_FEL_RUSH_DAMAGE, true);
                     }
             }
 
