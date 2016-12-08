@@ -43,8 +43,8 @@
 #include "OutdoorPvPMgr.h"
 #include "Unit.h"
 #include "BattlefieldMgr.h"
-#include "GameObjectPackets.h"
 #include "MiscPackets.h"
+#include "InstanceScenario.h"
 
 Object::Object()
 {
@@ -815,7 +815,7 @@ void Object::BuildDynamicValuesUpdate(uint8 updateType, ByteBuffer* data, Player
             data->resize(data->size() + arrayBlockCount * sizeof(UpdateMask::BlockType));
             for (std::size_t v = 0; v < values.size(); ++v)
             {
-                if (updateType == UPDATETYPE_VALUES ? _dynamicChangesArrayMask[index][v] : values[v])
+                if (updateType != UPDATETYPE_VALUES || _dynamicChangesArrayMask[index][v])
                 {
                     UpdateMask::SetUpdateBit(data->contents() + arrayMaskPos, v);
                     *data << uint32(values[v]);
@@ -1411,7 +1411,7 @@ void Object::SetDynamicValue(uint16 index, uint16 offset, uint32 value)
     if (_dynamicChangesArrayMask[index].size() <= offset)
         _dynamicChangesArrayMask[index].resize((offset / 32 + 1) * 32);
 
-    if (values[offset] != value)
+    if (values[offset] != value || changeType == UpdateMask::VALUE_AND_SIZE_CHANGED)
     {
         values[offset] = value;
         _dynamicChangesMask[index] = changeType;
@@ -2181,13 +2181,6 @@ void WorldObject::SendMessageToSet(WorldPacket const* data, Player const* skippe
     VisitNearbyWorldObject(GetVisibilityRange(), notifier);
 }
 
-void WorldObject::SendObjectDeSpawnAnim(ObjectGuid guid)
-{
-    WorldPackets::GameObject::GameObjectDespawn packet;
-    packet.ObjectGUID = guid;
-    SendMessageToSet(packet.Write(), true);
-}
-
 void WorldObject::SetMap(Map* map)
 {
     ASSERT(map);
@@ -2365,6 +2358,15 @@ void WorldObject::SetZoneScript()
                 m_zoneScript = sOutdoorPvPMgr->GetZoneScript(GetZoneId());
         }
     }
+}
+
+Scenario* WorldObject::GetScenario() const
+{
+    if (IsInWorld())
+        if (InstanceMap* instanceMap = GetMap()->ToInstanceMap())
+            return instanceMap->GetInstanceScenario();
+
+    return nullptr;
 }
 
 TempSummon* WorldObject::SummonCreature(uint32 entry, const Position &pos, TempSummonType spwtype, uint32 duration, uint32 /*vehId*/) const
@@ -2976,23 +2978,20 @@ bool WorldObject::IsInPhase(WorldObject const* obj) const
     return Trinity::Containers::Intersects(_phases.begin(), _phases.end(), obj->GetPhases().begin(), obj->GetPhases().end());
 }
 
-void WorldObject::PlayDistanceSound(uint32 sound_id, Player* target /*= NULL*/)
+void WorldObject::PlayDistanceSound(uint32 soundId, Player* target /*= nullptr*/)
 {
-    WorldPacket data(SMSG_PLAY_SPEAKERBOT_SOUND, 4 + 8);
-    data << uint32(sound_id);
-    data << GetGUID();
     if (target)
-        target->SendDirectMessage(&data);
+        target->SendDirectMessage(WorldPackets::Misc::PlaySpeakerbotSound(GetGUID(), soundId).Write());
     else
-        SendMessageToSet(&data, true);
+        SendMessageToSet(WorldPackets::Misc::PlaySpeakerbotSound(GetGUID(), soundId).Write(), true);
 }
 
-void WorldObject::PlayDirectSound(uint32 sound_id, Player* target /*= NULL*/)
+void WorldObject::PlayDirectSound(uint32 soundId, Player* target /*= nullptr*/)
 {
     if (target)
-        target->SendDirectMessage(WorldPackets::Misc::PlaySound(GetGUID(), sound_id).Write());
+        target->SendDirectMessage(WorldPackets::Misc::PlaySound(GetGUID(), soundId).Write());
     else
-        SendMessageToSet(WorldPackets::Misc::PlaySound(GetGUID(), sound_id).Write(), true);
+        SendMessageToSet(WorldPackets::Misc::PlaySound(GetGUID(), soundId).Write(), true);
 }
 
 void WorldObject::DestroyForNearbyPlayers()

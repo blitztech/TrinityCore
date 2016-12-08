@@ -104,8 +104,8 @@ Quest::Quest(Field* questRecord)
 
     for (uint32 i = 0; i < QUEST_REWARD_CURRENCY_COUNT; ++i)
     {
-        RewardCurrencyId[i] = questRecord[91 + i * 2].GetUInt32();
-        RewardCurrencyCount[i] = questRecord[92 + i * 2].GetUInt32();
+        RewardCurrencyId[i] = questRecord[92 + i * 2].GetUInt32();
+        RewardCurrencyCount[i] = questRecord[93 + i * 2].GetUInt32();
 
         if (RewardCurrencyId[i])
             ++_rewCurrencyCount;
@@ -198,8 +198,9 @@ void Quest::LoadQuestObjective(Field* fields)
     obj.ObjectID = fields[4].GetInt32();
     obj.Amount = fields[5].GetInt32();
     obj.Flags = fields[6].GetUInt32();
-    obj.ProgressBarWeight = fields[7].GetFloat();
-    obj.Description = fields[8].GetString();
+    obj.Flags2 = fields[7].GetUInt32();
+    obj.ProgressBarWeight = fields[8].GetFloat();
+    obj.Description = fields[9].GetString();
 
     Objectives.push_back(obj);
 }
