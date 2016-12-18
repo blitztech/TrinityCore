@@ -422,6 +422,7 @@ namespace WorldPackets
         class ObjectUpdateFailed;
         class ObjectUpdateRescued;
         class CompleteCinematic;
+        class CompleteMovie;
         class NextCinematicCamera;
         class FarSight;
         class LoadCUFProfiles;
@@ -1515,6 +1516,7 @@ class TC_GAME_API WorldSession
 
         void HandleCompleteCinematic(WorldPackets::Misc::CompleteCinematic& packet);
         void HandleNextCinematicCamera(WorldPackets::Misc::NextCinematicCamera& packet);
+        void HandleCompleteMovie(WorldPackets::Misc::CompleteMovie& packet);
 
         void HandleQueryPageText(WorldPackets::Query::QueryPageText& packet);
 
