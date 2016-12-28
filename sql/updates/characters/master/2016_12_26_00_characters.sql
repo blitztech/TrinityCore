@@ -1,4 +1,4 @@
-ALTER TABLE `character_void_storage` ADD `randomPropertyType` tinyint(3) unsigned NOT NULL DEFAULT '0' AFTER `creatorGuid`;
+-- ALTER TABLE `character_void_storage` ADD `randomPropertyType` tinyint(3) unsigned NOT NULL DEFAULT '0' AFTER `creatorGuid`;
 UPDATE `character_void_storage` SET `randomPropertyType`=1,`randomProperty`=0xFFFFFFFF-`randomProperty`+1 WHERE `randomProperty`>=0x80000000; -- recover from underflow when saving data in old format
 
 ALTER TABLE `item_instance` ADD `randomPropertyType` tinyint(3) unsigned NOT NULL DEFAULT '0' AFTER `enchantments`;
