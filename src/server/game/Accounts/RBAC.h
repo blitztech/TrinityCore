@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -923,7 +923,7 @@ class TC_GAME_API RBACData
 
         /// Loads all permissions assigned to current account
         void LoadFromDB();
-        PreparedQueryResultFuture LoadFromDBAsync();
+        QueryCallback LoadFromDBAsync();
         void LoadFromDBCallback(PreparedQueryResult result);
 
         /// Sets security level

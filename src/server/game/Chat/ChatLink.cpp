@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -358,8 +358,10 @@ std::string ItemChatLink::FormatName(uint8 index, LocalizedString* suffixStrings
     std::stringstream ss;
     ss << _item->GetName(LocaleConstant(index));
 
-    if (suffixStrings)
-        ss << ' ' << suffixStrings->Str[index];
+    if (!(_item->GetFlags3() & ITEM_FLAG3_HIDE_NAME_SUFFIX))
+        if (suffixStrings)
+            ss << ' ' << suffixStrings->Str[index];
+
     return ss.str();
 }
 
