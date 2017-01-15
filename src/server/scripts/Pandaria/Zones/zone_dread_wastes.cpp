@@ -56,7 +56,7 @@ class mob_ik_ik_the_nimble : public CreatureScript
             void JustSummoned(Creature* summon)
             {
                 summon->DespawnOrUnsummon(15000);
-                summon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+                summon->SetFlag(UNIT_FIELD_FLAGS, UNIT_STATE_ROOT);
             }
 
             void UpdateAI(uint32 diff)

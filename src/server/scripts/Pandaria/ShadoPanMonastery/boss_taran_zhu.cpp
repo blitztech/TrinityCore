@@ -189,7 +189,7 @@ public:
         void Reset()
         {
             // me->SetReactState(REACT_PASSIVE);
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_STATE_ROOT);
             me->CastSpell(me, SPELL_POOL_OF_SHADOWS, true);
         }
 
