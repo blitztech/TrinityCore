@@ -6870,7 +6870,6 @@ void Player::UpdateArea(uint32 newArea)
     UpdatePvPState(true);
 
     UpdateAreaDependentAuras(newArea);
-    UpdateAreaAndZonePhase();
 
     // previously this was in UpdateZone (but after UpdateArea) so nothing will break
     pvpInfo.IsInNoPvPArea = false;
@@ -15884,6 +15883,7 @@ void Player::SendQuestUpdate(uint32 questId)
 
     UpdateForQuestWorldObjects();
     SendUpdatePhasing();
+	UpdateAreaAndZonePhase();
 }
 
 QuestGiverStatus Player::GetQuestDialogStatus(Object* questgiver)
