@@ -7177,7 +7177,31 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
     uint32 itemLevel = item->GetItemLevel(this);
     float combatRatingMultiplier = 1.0f;
     if (GtCombatRatingsMultByILvl const* ratingMult = sCombatRatingsMultByILvlGameTable.GetRow(itemLevel))
-        combatRatingMultiplier = ratingMult->RatingMultiplier;
+    {
+        switch (proto->GetInventoryType())
+        {
+            case INVTYPE_WEAPON:
+            case INVTYPE_SHIELD:
+            case INVTYPE_RANGED:
+            case INVTYPE_2HWEAPON:
+            case INVTYPE_WEAPONMAINHAND:
+            case INVTYPE_WEAPONOFFHAND:
+            case INVTYPE_HOLDABLE:
+            case INVTYPE_RANGEDRIGHT:
+                combatRatingMultiplier = ratingMult->WeaponMultiplier;
+                break;
+            case INVTYPE_TRINKET:
+                combatRatingMultiplier = ratingMult->TrinketMultiplier;
+                break;
+            case INVTYPE_NECK:
+            case INVTYPE_FINGER:
+                combatRatingMultiplier = ratingMult->JewelryMultiplier;
+                break;
+            default:
+                combatRatingMultiplier = ratingMult->ArmorMultiplier;
+                break;
+        }
+    }
 
     // req. check at equip, but allow use for extended range if range limit max level, set proper level
     for (uint8 i = 0; i < MAX_ITEM_PROTO_STATS; ++i)
@@ -21220,14 +21244,18 @@ void Player::AddSpellMod(SpellModifier* mod, bool apply)
 {
     TC_LOG_DEBUG("spells", "Player::AddSpellMod: Player '%s' (%s), SpellID: %d", GetName().c_str(), GetGUID().ToString().c_str(), mod->spellId);
 
+    /// First, manipulate our spellmodifier container
+    if (apply)
+        m_spellMods[mod->op][mod->type].push_back(mod);
+    else
+        m_spellMods[mod->op][mod->type].remove(mod);
+
+    /// Now, send spellmodifier packet
     if (!IsLoading())
     {
         OpcodeServer opcode = (mod->type == SPELLMOD_FLAT) ? SMSG_SET_FLAT_SPELL_MODIFIER : SMSG_SET_PCT_SPELL_MODIFIER;
 
         WorldPackets::Spells::SetSpellModifier packet(opcode);
-
-        int i = 0;
-        flag128 _mask;
 
         /// @todo Implement sending of bulk modifiers instead of single
         packet.Modifiers.resize(1);
@@ -21237,32 +21265,25 @@ void Player::AddSpellMod(SpellModifier* mod, bool apply)
 
         for (int eff = 0; eff < 128; ++eff)
         {
-            if (eff != 0 && (eff % 32) == 0)
-                _mask[i++] = 0;
-
-            _mask[i] = uint32(1) << (eff - (32 * i));
-            if (mod->mask & _mask)
+            flag128 mask;
+            mask[eff / 32] = 1u << (eff % 32);
+            if (mod->mask & mask)
             {
                 WorldPackets::Spells::SpellModifierData modData;
 
                 if (mod->type == SPELLMOD_FLAT)
                 {
+                    modData.ModifierValue = 0.0f;
                     for (SpellModList::iterator itr = m_spellMods[mod->op][SPELLMOD_FLAT].begin(); itr != m_spellMods[mod->op][SPELLMOD_FLAT].end(); ++itr)
-                        if (*itr != mod && (*itr)->mask & _mask)
+                        if ((*itr)->mask & mask)
                             modData.ModifierValue += (*itr)->value;
-
-                    if (apply)
-                        modData.ModifierValue += mod->value;
                 }
                 else
                 {
                     modData.ModifierValue = 1.0f;
                     for (SpellModList::iterator itr = m_spellMods[mod->op][SPELLMOD_PCT].begin(); itr != m_spellMods[mod->op][SPELLMOD_PCT].end(); ++itr)
-                        if (*itr != mod && (*itr)->mask & _mask)
-                            modData.ModifierValue *= CalculatePct(1.0f, (*itr)->value);
-
-                    if (apply)
-                        modData.ModifierValue *= CalculatePct(1.0f, mod->value);
+                        if ((*itr)->mask & mask)
+                            modData.ModifierValue *= 1.0f + CalculatePct(1.0f, (*itr)->value);
                 }
 
                 modData.ClassIndex = eff;
@@ -21274,11 +21295,9 @@ void Player::AddSpellMod(SpellModifier* mod, bool apply)
         SendDirectMessage(packet.Write());
     }
 
-    if (apply)
-        m_spellMods[mod->op][mod->type].push_back(mod);
-    else
+    /// Finally, delete spellmodifier on remove
+    if (!apply)
     {
-        m_spellMods[mod->op][mod->type].remove(mod);
         // mods bound to aura will be removed in AuraEffect::~AuraEffect
         if (!mod->ownerAura)
             delete mod;
