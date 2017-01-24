@@ -4657,51 +4657,53 @@ enum ResponseCodes
     CHAR_CREATE_CHARACTER_GOLD_LIMIT                       = 45,
     CHAR_CREATE_FORCE_LOGIN                                = 46,
     CHAR_CREATE_TRIAL                                      = 47,
+    CHAR_CREATE_TIMEOUT                                    = 48,
+    CHAR_CREATE_THROTTLE                                   = 49,
 
-    CHAR_DELETE_IN_PROGRESS                                = 48,
-    CHAR_DELETE_SUCCESS                                    = 49,
-    CHAR_DELETE_FAILED                                     = 50,
-    CHAR_DELETE_FAILED_LOCKED_FOR_TRANSFER                 = 51,
-    CHAR_DELETE_FAILED_GUILD_LEADER                        = 52,
-    CHAR_DELETE_FAILED_ARENA_CAPTAIN                       = 53,
-    CHAR_DELETE_FAILED_HAS_HEIRLOOM_OR_MAIL                = 54,
-    CHAR_DELETE_FAILED_UPGRADE_IN_PROGRESS                 = 55,
-    CHAR_DELETE_FAILED_HAS_WOW_TOKEN                       = 56,
-    CHAR_DELETE_FAILED_VAS_TRANSACTION_IN_PROGRESS         = 57,
+    CHAR_DELETE_IN_PROGRESS                                = 50,
+    CHAR_DELETE_SUCCESS                                    = 51,
+    CHAR_DELETE_FAILED                                     = 52,
+    CHAR_DELETE_FAILED_LOCKED_FOR_TRANSFER                 = 53,
+    CHAR_DELETE_FAILED_GUILD_LEADER                        = 54,
+    CHAR_DELETE_FAILED_ARENA_CAPTAIN                       = 55,
+    CHAR_DELETE_FAILED_HAS_HEIRLOOM_OR_MAIL                = 56,
+    CHAR_DELETE_FAILED_UPGRADE_IN_PROGRESS                 = 57,
+    CHAR_DELETE_FAILED_HAS_WOW_TOKEN                       = 58,
+    CHAR_DELETE_FAILED_VAS_TRANSACTION_IN_PROGRESS         = 59,
 
-    CHAR_LOGIN_IN_PROGRESS                                 = 58,
-    CHAR_LOGIN_SUCCESS                                     = 59,
-    CHAR_LOGIN_NO_WORLD                                    = 60,
-    CHAR_LOGIN_DUPLICATE_CHARACTER                         = 61,
-    CHAR_LOGIN_NO_INSTANCES                                = 62,
-    CHAR_LOGIN_FAILED                                      = 63,
-    CHAR_LOGIN_DISABLED                                    = 64,
-    CHAR_LOGIN_NO_CHARACTER                                = 65,
-    CHAR_LOGIN_LOCKED_FOR_TRANSFER                         = 66,
-    CHAR_LOGIN_LOCKED_BY_BILLING                           = 67,
-    CHAR_LOGIN_LOCKED_BY_MOBILE_AH                         = 68,
-    CHAR_LOGIN_TEMPORARY_GM_LOCK                           = 69,
-    CHAR_LOGIN_LOCKED_BY_CHARACTER_UPGRADE                 = 70,
-    CHAR_LOGIN_LOCKED_BY_REVOKED_CHARACTER_UPGRADE         = 71,
-    CHAR_LOGIN_LOCKED_BY_REVOKED_VAS_TRANSACTION           = 72,
+    CHAR_LOGIN_IN_PROGRESS                                 = 60,
+    CHAR_LOGIN_SUCCESS                                     = 61,
+    CHAR_LOGIN_NO_WORLD                                    = 62,
+    CHAR_LOGIN_DUPLICATE_CHARACTER                         = 63,
+    CHAR_LOGIN_NO_INSTANCES                                = 64,
+    CHAR_LOGIN_FAILED                                      = 65,
+    CHAR_LOGIN_DISABLED                                    = 66,
+    CHAR_LOGIN_NO_CHARACTER                                = 67,
+    CHAR_LOGIN_LOCKED_FOR_TRANSFER                         = 68,
+    CHAR_LOGIN_LOCKED_BY_BILLING                           = 69,
+    CHAR_LOGIN_LOCKED_BY_MOBILE_AH                         = 70,
+    CHAR_LOGIN_TEMPORARY_GM_LOCK                           = 71,
+    CHAR_LOGIN_LOCKED_BY_CHARACTER_UPGRADE                 = 72,
+    CHAR_LOGIN_LOCKED_BY_REVOKED_CHARACTER_UPGRADE         = 73,
+    CHAR_LOGIN_LOCKED_BY_REVOKED_VAS_TRANSACTION           = 74,
 
-    CHAR_NAME_SUCCESS                                      = 73,
-    CHAR_NAME_FAILURE                                      = 74,
-    CHAR_NAME_NO_NAME                                      = 75,
-    CHAR_NAME_TOO_SHORT                                    = 76,
-    CHAR_NAME_TOO_LONG                                     = 77,
-    CHAR_NAME_INVALID_CHARACTER                            = 78,
-    CHAR_NAME_MIXED_LANGUAGES                              = 79,
-    CHAR_NAME_PROFANE                                      = 80,
-    CHAR_NAME_RESERVED                                     = 81,
-    CHAR_NAME_INVALID_APOSTROPHE                           = 82,
-    CHAR_NAME_MULTIPLE_APOSTROPHES                         = 83,
-    CHAR_NAME_THREE_CONSECUTIVE                            = 84,
-    CHAR_NAME_INVALID_SPACE                                = 85,
-    CHAR_NAME_CONSECUTIVE_SPACES                           = 86,
-    CHAR_NAME_RUSSIAN_CONSECUTIVE_SILENT_CHARACTERS        = 87,
-    CHAR_NAME_RUSSIAN_SILENT_CHARACTER_AT_BEGINNING_OR_END = 88,
-    CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME            = 89,
+    CHAR_NAME_SUCCESS                                      = 75,
+    CHAR_NAME_FAILURE                                      = 76,
+    CHAR_NAME_NO_NAME                                      = 77,
+    CHAR_NAME_TOO_SHORT                                    = 78,
+    CHAR_NAME_TOO_LONG                                     = 79,
+    CHAR_NAME_INVALID_CHARACTER                            = 80,
+    CHAR_NAME_MIXED_LANGUAGES                              = 81,
+    CHAR_NAME_PROFANE                                      = 82,
+    CHAR_NAME_RESERVED                                     = 83,
+    CHAR_NAME_INVALID_APOSTROPHE                           = 84,
+    CHAR_NAME_MULTIPLE_APOSTROPHES                         = 85,
+    CHAR_NAME_THREE_CONSECUTIVE                            = 86,
+    CHAR_NAME_INVALID_SPACE                                = 87,
+    CHAR_NAME_CONSECUTIVE_SPACES                           = 88,
+    CHAR_NAME_RUSSIAN_CONSECUTIVE_SILENT_CHARACTERS        = 89,
+    CHAR_NAME_RUSSIAN_SILENT_CHARACTER_AT_BEGINNING_OR_END = 90,
+    CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME            = 91
 };
 
 enum CharacterUndeleteResult
@@ -4739,7 +4741,7 @@ enum BattlegroundTeamId : uint8
 
 #define BG_TEAMS_COUNT  2
 
-// indexes of BattlemasterList.dbc (6.0)
+// indexes of BattlemasterList.dbc (7.1.5.23360)
 enum BattlegroundTypeId
 {
     BATTLEGROUND_TYPE_NONE      = 0,   // None
@@ -4753,16 +4755,14 @@ enum BattlegroundTypeId
     BATTLEGROUND_RL             = 8,   // Ruins of Lordaernon
     BATTLEGROUND_SA             = 9,   // Strand of the Ancients
     BATTLEGROUND_DS             = 10,  // Dalaran Sewers
-    BATTLEGROUND_RV             = 11,  // Ring of Valor
+    BATTLEGROUND_RV             = 11,  // The Ring of Valor
     BATTLEGROUND_IC             = 30,  // Isle of Conquest
     BATTLEGROUND_RB             = 32,  // Random Battleground
-    BATTLEGROUND_RATED_10_VS_10 = 100, // Rated BG 10 vs 10
-    BATTLEGROUND_RATED_15_VS_15 = 101, // Rated BG 15 vs 15
-    BATTLEGROUND_RATED_25_VS_25 = 102, // Rated BG 25 vs 25
+    BATTLEGROUND_RATED_10_VS_10 = 100, // Rated Battleground 10 vs 10
+    BATTLEGROUND_RATED_15_VS_15 = 101, // Rated Battleground 15 vs 15
+    BATTLEGROUND_RATED_25_VS_25 = 102, // Rated Battleground 25 vs 25
     BATTLEGROUND_TP             = 108, // Twin Peaks
     BATTLEGROUND_BFG            = 120, // Battle For Gilneas
-    // 441 = "Icecrown Citadel"
-    // 443 = "The Ruby Sanctum"
     // 656 = "Rated Eye of the Storm"
     BATTLEGROUND_TK             = 699, // Temple of Kotmogu
     // 706 = "CTF3"
@@ -4770,10 +4770,15 @@ enum BattlegroundTypeId
     BATTLEGROUND_TVA            = 719, // Tol'Viron Arena
     BATTLEGROUND_DG             = 754, // Deepwind Gorge
     BATTLEGROUND_TTP            = 757, // The Tiger's Peak
-    BATTLEGROUND_SS_VS_TM       = 789  // Southshore vs. Tarren Mill
+    BATTLEGROUND_SS_VS_TM       = 789, // Southshore vs. Tarren Mill
+    BATTLEGROUND_SMALL_D        = 803, // Small Battleground D
+    BATTLEGROUND_BRH            = 808, // Black Rook Hold Arena
+    // 809 = "New Nagrand Arena (Legion)"
+    BATTLEGROUND_AF             = 816, // Ashamane's Fall
+    // 844 = "New Blade's Edge Arena (Legion)"
 };
 
-#define MAX_BATTLEGROUND_TYPE_ID 758
+#define MAX_BATTLEGROUND_TYPE_ID 845
 
 enum MailResponseType
 {
