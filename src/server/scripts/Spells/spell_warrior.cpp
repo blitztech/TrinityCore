@@ -32,7 +32,9 @@ enum WarriorSpells
     SPELL_WARRIOR_BLADESTORM_PERIODIC_WHIRLWIND     = 50622,
     SPELL_WARRIOR_BLOODTHIRST                       = 23885,
     SPELL_WARRIOR_BLOODTHIRST_DAMAGE                = 23881,
-    SPELL_WARRIOR_CHARGE                            = 34846,
+    SPELL_WARRIOR_CHARGE                            = 198337,
+	SPELL_WARRIOR_FURIOUS_CHARGE_TALENT				= 202224,
+	SPELL_WARRIOR_FURIOUS_CHARGE_BUFF				= 202225,
     SPELL_WARRIOR_COLOSSUS_SMASH                    = 86346,
     SPELL_WARRIOR_DEEP_WOUNDS_RANK_1                = 12162,
     SPELL_WARRIOR_DEEP_WOUNDS_RANK_2                = 12850,
@@ -63,7 +65,7 @@ enum WarriorSpells
     SPELL_WARRIOR_UNRELENTING_ASSAULT_TRIGGER_2     = 64850,
     SPELL_WARRIOR_VIGILANCE_PROC                    = 50725,
     SPELL_WARRIOR_VENGEANCE                         = 76691,
-    SPELL_WARRIOR_HEROIC_LEAP_JUMP                  = 178368,
+    SPELL_WARRIOR_HEROIC_LEAP_JUMP                  = 162052,
     SPELL_WARRIOR_GLYPH_OF_HEROIC_LEAP              = 159708,
     SPELL_WARRIOR_GLYPH_OF_HEROIC_LEAP_BUFF         = 133278,
     SPELL_WARRIOR_IMPROVED_HEROIC_LEAP              = 157449,
@@ -138,6 +140,8 @@ class spell_warr_charge : public SpellScriptLoader
             {
                 if (!sSpellMgr->GetSpellInfo(SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_TALENT) ||
                     !sSpellMgr->GetSpellInfo(SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_BUFF) ||
+					!sSpellMgr->GetSpellInfo(SPELL_WARRIOR_FURIOUS_CHARGE_TALENT)	||
+					!sSpellMgr->GetSpellInfo(SPELL_WARRIOR_FURIOUS_CHARGE_BUFF) ||
                     !sSpellMgr->GetSpellInfo(SPELL_WARRIOR_CHARGE))
                     return false;
                 return true;
@@ -152,6 +156,9 @@ class spell_warr_charge : public SpellScriptLoader
                 // Juggernaut crit bonus
                 if (caster->HasAura(SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_TALENT))
                     caster->CastSpell(caster, SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_BUFF, true);
+				// Furious Charge
+				if (GetCaster()->HasAura(SPELL_WARRIOR_FURIOUS_CHARGE_TALENT))
+					GetCaster()->CastSpell(GetCaster(), SPELL_WARRIOR_FURIOUS_CHARGE_BUFF, true);
             }
 
             void Register() override

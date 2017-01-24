@@ -20,7 +20,8 @@
 
 enum SceneSpells
 {
-    SPELL_DEATHWING_SIMULATOR = 201184
+    SPELL_DEATHWING_SIMULATOR = 201184,
+	SPELL_STOP_GULDAN		  = 91182
 };
 
 class scene_deathwing_simulator : public SceneScript
@@ -36,7 +37,20 @@ class scene_deathwing_simulator : public SceneScript
     }
 };
 
+class scene_stop_guldan : public SceneScript
+{
+public:
+	scene_stop_guldan() : SceneScript ("scene_stop_guldan") {}
+
+	void OnSceneTriggerEvent(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/, std::string const& triggerName) override
+	{
+		if (triggerName == "PLAYER") {}
+		player->CastSpell(player, SPELL_STOP_GULDAN, true);
+	}
+};
+
 void AddSC_scene_scripts()
 {
     new scene_deathwing_simulator();
+	new scene_stop_guldan();
 }
