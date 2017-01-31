@@ -21,7 +21,7 @@
 enum SceneSpells
 {
     SPELL_DEATHWING_SIMULATOR = 201184,
-	SPELL_STOP_GULDAN		  = 91182
+	QUEST_STOP_GULDAN		  = 38723
 };
 
 class scene_deathwing_simulator : public SceneScript
@@ -44,8 +44,12 @@ public:
 
 	void OnSceneTriggerEvent(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/, std::string const& triggerName) override
 	{
-		if (triggerName == "PLAYER") {}
-		player->CastSpell(player, SPELL_STOP_GULDAN, true);
+		if (player && player->GetQuestStatus(QUEST_STOP_GULDAN) == QUEST_STATUS_INCOMPLETE);
+			
+		{
+			
+		}
+		
 	}
 };
 
