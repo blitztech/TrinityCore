@@ -68,7 +68,8 @@ enum spells
 	SHADOW_BUFF = 48170,
 	KINGS_BUFF = 43223,
 	ARCANE_BUFF = 36880, */
-	JUMP_TO_SKYHOLD = 192084
+	JUMP_TO_SKYHOLD = 192084,
+	TELEPORT_VAULTH_OF_WARDEN = 205395
 };
      
 class warrior_classhall_to_skyhold : public CreatureScript
@@ -109,88 +110,42 @@ class warrior_classhall_to_skyhold : public CreatureScript
 
 								case CLASS_HUNTER:
 										{
-											 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-											 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-											 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-											 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-											 pPlayer->CastSpell(pPlayer, ARCANE_BUFF, true);
-											 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-											 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 										}break;
 
 								case CLASS_ROGUE:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 									}break;
 
 								case CLASS_PRIEST:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, ARCANE_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 									}break;
 
 								case CLASS_DEATH_KNIGHT:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 									}break;
 
 								case CLASS_SHAMAN:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, ARCANE_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 									}break;
 
 								case CLASS_MAGE:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, ARCANE_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 									}break;
 
 								case CLASS_WARLOCK:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, ARCANE_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+	
 									}break;
 
 								case CLASS_DRUID:
 									{
-										 pPlayer->CastSpell(pPlayer, POWER_WORD_FORTITUDE, true);
-										 pPlayer->CastSpell(pPlayer, KINGS_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, MARK_OF_THE_WILD, true);
-										 pPlayer->CastSpell(pPlayer, PRAYER_OF_SPRITE, true);
-										 pPlayer->CastSpell(pPlayer, ARCANE_BUFF, true);
-										 pPlayer->CastSpell(pPlayer, SHADOW_BUFF, true);
-										 pCreature->MonsterWhisper("You are now buffed!", pPlayer->GetGUID(), true);
+
 									}break; */
 
 								case 100:
@@ -202,9 +157,45 @@ class warrior_classhall_to_skyhold : public CreatureScript
                         return true;
                 }
 };
-     
+
+// npc 99260 Kor'vas Bloodthorn
+class demonhunter_teleport_vault_of_Warden : public CreatureScript
+{
+public:
+	demonhunter_teleport_vault_of_Warden() : CreatureScript("demonhunter_teleport_vault_of_Warden") {}
+
+	bool OnGossipHello(Player * pPlayer, Creature * pCreature)
+	{
+		pPlayer->ADD_GOSSIP_ITEM(4, "Teleport To Vault of Warden!", GOSSIP_SENDER_MAIN, 1);
+		pPlayer->ADD_GOSSIP_ITEM(4, "Exit", GOSSIP_SENDER_MAIN, 100);
+		pPlayer->PlayerTalkClass->SendGossipMenu(9425, pCreature->GetGUID());
+
+		return true;
+	}
+
+	bool OnGossipSelect(Player * pPlayer, Creature * pCreature, uint32 /*uiSender*/, uint32 uiAction)
+	{
+		pPlayer->PlayerTalkClass->ClearMenus();
+
+		switch (pPlayer->getClass())
+		{
+			case CLASS_DEMON_HUNTER:
+			{
+				pPlayer->CastSpell(pPlayer, TELEPORT_VAULTH_OF_WARDEN, true);
+			}break;
+
+			case 100:
+			{
+				pPlayer->CLOSE_GOSSIP_MENU();
+			}break;
+
+		}
+		return true;
+	}
+};
 void AddSC_custom_npc()
 {
         new warrior_classhall_to_skyhold();
 		new FirstLogin();
+		new demonhunter_teleport_vault_of_Warden();
 }
