@@ -39,9 +39,9 @@ void AddCustomScripts()
 	AddSC_dk_spell();
     AddSC_mage_spell();
     AddSC_paladin_spell();
-    AddSC_warrior_spell);
+    AddSC_warrior_spell();
     AddSC_hunter_spell();
-    AddSC_warlock_spell);
+    AddSC_warlock_spell();
     AddSC_dh_spell();
     AddSC_priest_spell();
 	AddSC_druid_spell();

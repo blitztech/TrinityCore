@@ -99,5 +99,5 @@ public:
 void AddSC_mage_spell()
 {
 	new spell_mage_glyph_of_illusion();
-	new spell_mage_glyph_of_conjure_familiar()
+	new spell_mage_glyph_of_conjure_familiar();
 }
