@@ -17,10 +17,33 @@
 
 // This is where scripts' loading functions should be declared:
 void AddSC_custom_npc();
+void AddSC_monk_spell();
+void AddSC_dk_spell();
+void AddSC_mage_spell();
+void AddSC_paladin_spell();
+void AddSC_warrior_spell();
+void AddSC_hunter_spell();
+void AddSC_warlock_spell();
+void AddSC_dh_spell();
+void AddSC_priest_spell();
+void AddSC_druid_spell();
+void AddSC_shaman_spell();
+
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
 void AddCustomScripts()
 {
 	AddSC_custom_npc();
-};
+	AddSC_monk_spell();
+	AddSC_dk_spell();
+    AddSC_mage_spell();
+    AddSC_paladin_spell();
+    AddSC_warrior_spell);
+    AddSC_hunter_spell();
+    AddSC_warlock_spell);
+    AddSC_dh_spell();
+    AddSC_priest_spell();
+	AddSC_druid_spell();
+	AddSC_shaman_spell();
+}; 
