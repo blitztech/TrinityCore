@@ -511,6 +511,7 @@ class TC_GAME_API AuraScript : public _SpellScript
         typedef void(CLASSNAME::*AuraEffectApplicationModeFnType)(AuraEffect const*, AuraEffectHandleModes); \
         typedef void(CLASSNAME::*AuraEffectPeriodicFnType)(AuraEffect const*); \
         typedef void(CLASSNAME::*AuraEffectUpdatePeriodicFnType)(AuraEffect*); \
+        typedef void(CLASSNAME::*AuraUpdateFnType)(uint32); \
         typedef void(CLASSNAME::*AuraEffectCalcAmountFnType)(AuraEffect const*, int32 &, bool &); \
         typedef void(CLASSNAME::*AuraEffectCalcPeriodicFnType)(AuraEffect const*, bool &, int32 &); \
         typedef void(CLASSNAME::*AuraEffectCalcSpellModFnType)(AuraEffect const*, SpellModifier* &); \
@@ -553,6 +554,14 @@ class TC_GAME_API AuraScript : public _SpellScript
             private:
                 AuraEffectPeriodicFnType pEffectHandlerScript;
         };
+		class TC_GAME_API AuraUpdateHandler
+		{
+		public:
+			AuraUpdateHandler(AuraUpdateFnType _pEffectHandlerScript);
+			void Call(AuraScript* auraScript, uint32 diff);
+		private:
+			AuraUpdateFnType pEffectHandlerScript;
+		};
         class TC_GAME_API EffectUpdatePeriodicHandler : public EffectBase
         {
             public:
@@ -735,6 +744,12 @@ class TC_GAME_API AuraScript : public _SpellScript
         // where function is: void function (AuraEffect const* aurEff);
         HookList<EffectPeriodicHandler> OnEffectPeriodic;
         #define AuraEffectPeriodicFn(F, I, N) EffectPeriodicHandlerFunction(&F, I, N)
+
+		// executed when aura is updated
+		// example: OnAuraUpdate += AuraUpdateFn(class::function);
+		// where function is: void function (const uint32 diff);
+		HookList<AuraUpdateHandler> OnAuraUpdate;
+		#define AuraUpdateFn(F) AuraUpdateHandlerFunction(&F)
 
         // executed when periodic aura effect is updated
         // example: OnEffectUpdatePeriodic += AuraEffectUpdatePeriodicFn(class::function, EffectIndexSpecifier, EffectAuraNameSpecifier);

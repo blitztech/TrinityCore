@@ -713,9 +713,45 @@ int32 AuraEffect::CalculateAmount(Unit* caster)
                 amount = caster->GetMap()->GetDifficultyID();
             m_canBeRecalculated = false;
             break;
-        default:
-            break;
-    }
+		case SPELL_AURA_MOD_INCREASE_HEALTH_PERCENT:
+		{
+			switch (GetId())
+			{
+			case 120954:// Fortifying Brew
+			{
+				// Glyph of Fortifying Brew
+				if (caster->HasAura(124997))
+					amount = 10;
+
+				break;
+			}
+			default:
+				break;
+			}
+
+			break;
+		}
+		case SPELL_AURA_MOD_DAMAGE_PERCENT_TAKEN:
+		{
+			switch (GetId())
+			{
+			case 120954:// Fortifying Brew
+			{
+				// Glyph of Fortifying Brew
+				if (caster->HasAura(124997))
+					amount = 25;
+
+				break;
+			}
+			default:
+				break;
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
 
     GetBase()->CallScriptEffectCalcAmountHandlers(this, amount, m_canBeRecalculated);
     amount *= GetBase()->GetStackAmount();

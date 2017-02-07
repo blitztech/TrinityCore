@@ -2900,7 +2900,6 @@ void SpellMgr::LoadSpellInfoCustomAttributes()
         if (talentSpells.count(spellInfo->Id))
             spellInfo->AttributesCu |= SPELL_ATTR0_CU_IS_TALENT;
 
-
         spellInfo->_InitializeExplicitTargetMask();
     }
 
@@ -3473,6 +3472,10 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 102445: // Summon Master Li Fei
                 const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_0))->TargetA = SpellImplicitTargetInfo(TARGET_DEST_DB);
                 break;
+				//Monk spell
+			case 120954:// Fortifying Brew
+				const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_4))->ApplyAuraName = SPELL_AURA_MOD_INCREASE_HEALTH_PERCENT;
+				break;
             default:
                 break;
         }
