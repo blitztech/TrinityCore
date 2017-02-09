@@ -350,7 +350,7 @@ public:
 	}
 };
 
-class spell_monk_ring_of_peace : public SpellScriptLoader
+/*class spell_monk_ring_of_peace : public SpellScriptLoader
 {
 public:
 	spell_monk_ring_of_peace() : SpellScriptLoader("spell_monk_ring_of_peace") { }
@@ -388,8 +388,7 @@ public:
 	{
 		return new spell_monk_ring_of_peace_AuraScript();
 	}
-};
-
+};*/
 
 void AddSC_monk_spell()
 {
@@ -400,5 +399,5 @@ void AddSC_monk_spell()
 	new spell_monk_expel_harm();
 	new spell_monk_roll();
 	new spell_monk_ring_of_peace_dummy();
-	new spell_monk_ring_of_peace();
+	/*new spell_monk_ring_of_peace();*/
 }

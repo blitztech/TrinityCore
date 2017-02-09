@@ -27,3 +27,8 @@ enum DemonHunterSpells
 
 };
 
+void AddSC_dh_spell()
+{
+
+}
+

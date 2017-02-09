@@ -21,3 +21,8 @@
 #include "GridNotifiers.h"
 #include "SpellScript.h"
 #include "Unit.h"
+
+void AddSC_priest_spell()
+{
+
+}
