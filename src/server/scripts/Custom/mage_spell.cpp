@@ -24,7 +24,9 @@
 
 enum GlyphOfIllusion
 {
-	MAGE_GLYPH_OF_ILLUSION_ACTIVE = 131784
+	MAGE_GLYPH_OF_ILLUSION_ACTIVE			= 131784,
+	SPELL_MAGE_CAUTERIZE					= 86949,
+	SPELL_MAGE_BLAZING_BARRIER_TRIGGERED	= 235314
 };
 
 class spell_mage_glyph_of_illusion : public SpellScriptLoader
@@ -96,8 +98,52 @@ public:
 	}
 };
 
+// 235313 - Blazing Barrier [7.1.5]
+class spell_mage_blazing_barrier : public SpellScriptLoader
+{
+public:
+	spell_mage_blazing_barrier() : SpellScriptLoader("spell_mage_blazing_barrier") { }
+
+	class spell_mage_blazing_barrier_AuraScript : public AuraScript
+	{
+		PrepareAuraScript(spell_mage_blazing_barrier_AuraScript);
+
+		void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& canBeRecalculated)
+		{
+			canBeRecalculated = false;
+
+			if (Unit* caster = GetCaster())
+				amount = int32(caster->SpellBaseDamageBonusDone(GetSpellInfo()->GetSchoolMask()) * 7.0f);
+		}
+
+		void HandleProc(AuraEffect const* /*aurEff*/, ProcEventInfo& eventInfo)
+		{
+			PreventDefaultAction();
+
+			Unit* caster = eventInfo.GetDamageInfo()->GetAttacker();
+			Unit* target = eventInfo.GetDamageInfo()->GetVictim();
+			if (!caster || !target)
+				return;
+
+			caster->CastSpell(target, SPELL_MAGE_BLAZING_BARRIER_TRIGGERED, true);
+		}
+
+		void Register() override
+		{
+			DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_mage_blazing_barrier_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB);
+			OnEffectProc += AuraEffectProcFn(spell_mage_blazing_barrier_AuraScript::HandleProc, EFFECT_1, SPELL_AURA_PROC_TRIGGER_SPELL);
+		}
+	};
+
+	AuraScript* GetAuraScript() const override
+	{
+		return new spell_mage_blazing_barrier_AuraScript();
+	}
+};
+
 void AddSC_mage_spell()
 {
 	new spell_mage_glyph_of_illusion();
 	new spell_mage_glyph_of_conjure_familiar();
+	new spell_mage_blazing_barrier();
 }
