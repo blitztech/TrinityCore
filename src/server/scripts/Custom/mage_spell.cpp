@@ -26,6 +26,8 @@ enum GlyphOfIllusion
 {
 	MAGE_GLYPH_OF_ILLUSION_ACTIVE			= 131784,
 	SPELL_MAGE_CAUTERIZE					= 86949,
+	SPELL_MAGE_CHILLED						= 205708,
+	SPELL_MAGE_CONE_OF_COLD					= 212792,
 	SPELL_MAGE_BLAZING_BARRIER_TRIGGERED	= 235314
 };
 
@@ -141,11 +143,6 @@ public:
 	}
 };
 
-enum IceBarrier
-{
-	SPELL_MAGE_CHILLED = 205708
-}
-
 // 11426 - Ice Barrier [7.1.5]
 class spell_mage_ice_barrier : public SpellScriptLoader
 {
@@ -189,7 +186,42 @@ public:
 	}
 };
 
+// 120 - Cone of Cold [7.1.5]
+class spell_mage_cone_of_cold : public SpellScriptLoader
+{
+public:
+	spell_mage_cone_of_cold() : SpellScriptLoader("spell_mage_cone_of_cold") { }
 
+	class spell_mage_cone_of_cold_SpellScript : public SpellScript
+	{
+		PrepareSpellScript(spell_mage_cone_of_cold_SpellScript);
+
+		bool Validate(SpellInfo const* /*spellInfo*/) override
+		{
+			if (!sSpellMgr->GetSpellInfo(SPELL_MAGE_CONE_OF_COLD))
+				return false;
+			return true;
+		}
+
+		void HandleHit(SpellEffIndex /*effIndex*/)
+		{
+			Unit* caster = GetCaster();
+			Unit* target = GetHitUnit();
+			if (caster && target)
+				caster->CastSpell(target, SPELL_MAGE_CONE_OF_COLD, true);
+		}
+
+		void Register() override
+		{
+			OnEffectHitTarget += SpellEffectFn(spell_mage_cone_of_cold_SpellScript::HandleHit, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
+		}
+	};
+
+	SpellScript* GetSpellScript() const override
+	{
+		return new spell_mage_cone_of_cold_SpellScript();
+	}
+};
 
 void AddSC_mage_spell()
 {
@@ -197,4 +229,5 @@ void AddSC_mage_spell()
 	new spell_mage_glyph_of_conjure_familiar();
 	new spell_mage_blazing_barrier();
 	new spell_mage_ice_barrier();
+	new spell_mage_cone_of_cold();
 }
