@@ -26,6 +26,8 @@ enum WarriorSpells
 {
 	SPELL_WARRIOR_STORM_BOLT		= 107570,
 	SPELL_WARRIOR_STORM_BOLT_STUN	= 132169,
+	SPELL_WARRIOR_SHOCKWAVE			= 46968,
+	SPELL_WARRIOR_SHOCKWAVE_STUN	= 132168,
 };
 
 // 107570 - Storm Bolt
@@ -67,7 +69,73 @@ public:
 	}
 };
 
+// 46968 - Shockwave
+class spell_warr_shockwave : public SpellScriptLoader
+{
+public:
+	spell_warr_shockwave() : SpellScriptLoader("spell_warr_shockwave") { }
+
+	class spell_warr_shockwave_SpellScript : public SpellScript
+	{
+		PrepareSpellScript(spell_warr_shockwave_SpellScript);
+
+		bool Validate(SpellInfo const* /*spellInfo*/) override
+		{
+			return ValidateSpellInfo
+			({
+				SPELL_WARRIOR_SHOCKWAVE,
+				SPELL_WARRIOR_SHOCKWAVE_STUN
+			});
+		}
+
+		bool Load() override
+		{
+			return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+		}
+
+		void CountTargets(std::list<WorldObject*>& targetList)
+		{
+			_targetCount = targetList.size();
+		}
+
+		void HandleDamage(SpellEffIndex /*effIndex*/)
+		{
+			Unit* caster = GetCaster();
+			Unit* target = GetHitUnit();
+
+			if (target)
+			{
+				caster->CastSpell(target, SPELL_WARRIOR_SHOCKWAVE_STUN, true);
+			}
+		}
+
+		// Cooldown reduced by 20 sec if it strikes at least 3 targets.
+		void HandleAfterCast()
+		{
+			if (_targetCount >= uint32(GetSpellInfo()->GetEffect(EFFECT_0)->CalcValue()))
+			{
+				GetCaster()->ToPlayer()->GetSpellHistory()->ModifyCooldown(SPELL_WARRIOR_SHOCKWAVE, -(GetSpellInfo()->GetEffect(EFFECT_3)->CalcValue() * IN_MILLISECONDS));
+			}
+		}
+
+		void Register() override
+		{
+			OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_warr_shockwave_SpellScript::CountTargets, EFFECT_0, TARGET_UNIT_CONE_ENEMY_104);
+			OnEffectHitTarget += SpellEffectFn(spell_warr_shockwave_SpellScript::HandleDamage, EFFECT_1, SPELL_EFFECT_SCHOOL_DAMAGE);
+			AfterCast += SpellCastFn(spell_warr_shockwave_SpellScript::HandleAfterCast);
+		}
+
+	private:
+		uint32 _targetCount = 0;
+	};
+
+	SpellScript* GetSpellScript() const override
+	{
+		return new spell_warr_shockwave_SpellScript();
+	}
+};
 void AddSC_warrior_spell()
 {
 	new spell_warr_storm_bolt();
+	new spell_warr_shockwave();
 }
