@@ -22,7 +22,52 @@
 #include "SpellScript.h"
 #include "Unit.h"
 
+enum WarriorSpells
+{
+	SPELL_WARRIOR_STORM_BOLT		= 107570,
+	SPELL_WARRIOR_STORM_BOLT_STUN	= 132169,
+};
+
+// 107570 - Storm Bolt
+class spell_warr_storm_bolt : public SpellScriptLoader
+{
+public:
+	spell_warr_storm_bolt() : SpellScriptLoader("spell_warr_storm_bolt") { }
+
+	class spell_warr_storm_bolt_SpellScript : public SpellScript
+	{
+		PrepareSpellScript(spell_warr_storm_bolt_SpellScript);
+
+		bool Validate(SpellInfo const* /*spellInfo*/) override
+		{
+			return ValidateSpellInfo
+			({
+				SPELL_WARRIOR_STORM_BOLT,
+				SPELL_WARRIOR_STORM_BOLT_STUN
+			});
+		}
+
+		void HandleDamage(SpellEffIndex /*effIndex*/)
+		{
+			Unit* caster = GetCaster();
+
+			if (Unit* target = GetHitUnit())
+				caster->CastSpell(target, SPELL_WARRIOR_STORM_BOLT_STUN, true);
+		}
+
+		void Register() override
+		{
+			OnEffectHitTarget += SpellEffectFn(spell_warr_storm_bolt_SpellScript::HandleDamage, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
+		}
+	};
+
+	SpellScript* GetSpellScript() const override
+	{
+		return new spell_warr_storm_bolt_SpellScript();
+	}
+};
+
 void AddSC_warrior_spell()
 {
-
+	new spell_warr_storm_bolt();
 }
