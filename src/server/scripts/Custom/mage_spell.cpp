@@ -26,7 +26,6 @@ enum GlyphOfIllusion
 {
 	MAGE_GLYPH_OF_ILLUSION_ACTIVE			= 131784,
 	SPELL_MAGE_CAUTERIZE					= 86949,
-	SPELL_MAGE_CHILLED						= 205708,
 	SPELL_MAGE_CONE_OF_COLD					= 212792,
 	SPELL_MAGE_BLAZING_BARRIER_TRIGGERED	= 235314
 };
@@ -143,49 +142,6 @@ public:
 	}
 };
 
-// 11426 - Ice Barrier [7.1.5]
-class spell_mage_ice_barrier : public SpellScriptLoader
-{
-public:
-	spell_mage_ice_barrier() : SpellScriptLoader("spell_mage_ice_barrier") { }
-
-	class spell_mage_ice_barrier_AuraScript : public AuraScript
-	{
-		PrepareAuraScript(spell_mage_ice_barrier_AuraScript);
-
-		bool Validate(SpellInfo const* /*spell*/) override
-		{
-			if (!sSpellMgr->GetSpellInfo(SPELL_MAGE_CHILLED))
-				return false;
-			return true;
-		}
-
-		void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& canBeRecalculated)
-		{
-			canBeRecalculated = false;
-			if (Unit* caster = GetCaster())
-				amount += int32(10.0f * caster->SpellBaseHealingBonusDone(GetSpellInfo()->GetSchoolMask()));
-		}
-
-		void HandleHit(AuraEffect* /*aurEff*/, DamageInfo& dmgInfo, uint32 & /*absorbAmount*/)
-		{
-			if (Unit* target = dmgInfo.GetAttacker())
-				GetCaster()->CastSpell(target, SPELL_MAGE_CHILLED, true);
-		}
-
-		void Register() override
-		{
-			DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_mage_ice_barrier_AuraScript::CalculateAmount, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB);
-			AfterEffectAbsorb += AuraEffectAbsorbFn(spell_mage_ice_barrier_AuraScript::HandleHit, EFFECT_0);
-		}
-	};
-
-	AuraScript* GetAuraScript() const override
-	{
-		return new spell_mage_ice_barrier_AuraScript();
-	}
-};
-
 // 120 - Cone of Cold [7.1.5]
 class spell_mage_cone_of_cold : public SpellScriptLoader
 {
@@ -228,6 +184,5 @@ void AddSC_mage_spell()
 	new spell_mage_glyph_of_illusion();
 	new spell_mage_glyph_of_conjure_familiar();
 	new spell_mage_blazing_barrier();
-	new spell_mage_ice_barrier();
 	new spell_mage_cone_of_cold();
 }

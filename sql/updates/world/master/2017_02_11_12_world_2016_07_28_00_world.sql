@@ -50,4 +50,3 @@ INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, 
 (@GMIDNIGHT, 135835, 0, 0, 1, 0, 0);
 
 UPDATE `creature_template` SET `ScriptName` = 'boss_attumen', `lootid` = @ATTUMEN_MOUNTED WHERE `entry` = @ATTUMEN_MOUNTED;
-UPDATE `creature_loot_template` SET `entry` = @ATTUMEN_MOUNTED WHERE `entry` = @ATTUMEN_UNMOUNTED;
