@@ -118,9 +118,9 @@ class npc_lao_softfoot : public CreatureScript
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Start", GOSSIP_SENDER_MAIN,  GOSSIP_ACTION_INFO_DEF);
+			AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Start", GOSSIP_SENDER_MAIN,  GOSSIP_ACTION_INFO_DEF);
             
-            player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
+			SendGossipMenuFor(player, player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
 

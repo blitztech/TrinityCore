@@ -30,6 +30,7 @@
  #include "Player.h"
  #include "ScriptMgr.h"
  #include "SharedDefines.h"
+ #include "ScriptedGossip.h"
  
  
  class DelayedWhisper : public BasicEvent
@@ -77,24 +78,24 @@ class warrior_classhall_to_skyhold : public CreatureScript
         public:
                 warrior_classhall_to_skyhold() : CreatureScript("warrior_classhall_to_skyhold"){}
      
-                bool OnGossipHello(Player * pPlayer, Creature * pCreature)
+				bool OnGossipHello(Player* player, Creature* creature)
                 {
-                        pPlayer->ADD_GOSSIP_ITEM(4, "Send Me Now!", GOSSIP_SENDER_MAIN, 1);
-						pPlayer->ADD_GOSSIP_ITEM(4, "Never mind", GOSSIP_SENDER_MAIN, 100);
-                        pPlayer->PlayerTalkClass->SendGossipMenu(9425, pCreature->GetGUID());
+						AddGossipItemFor(player, 4, "Send Me Now!", GOSSIP_SENDER_MAIN, 1);
+						AddGossipItemFor(player, 4, "Never mind", GOSSIP_SENDER_MAIN, 100);
+						player->PlayerTalkClass->SendGossipMenu(9425, creature->GetGUID());
 									
                         return true;
                 }
      
-                bool OnGossipSelect(Player * pPlayer, Creature * pCreature, uint32 /*uiSender*/, uint32 uiAction)
+                bool OnGossipSelect(Player * player, Creature * creature, uint32 /*uiSender*/, uint32 uiAction)
                 {
-					pPlayer->PlayerTalkClass->ClearMenus();
+					player->PlayerTalkClass->ClearMenus();
 					
-					    switch(pPlayer->getClass())
+					    switch(player->getClass())
                         {
                                 case CLASS_WARRIOR:
 									{
-                                        pPlayer->CastSpell(pPlayer, JUMP_TO_SKYHOLD, true);
+                                        player->CastSpell(player, JUMP_TO_SKYHOLD, true);
                                     }break;
 
 								/*case CLASS_PALADIN:
@@ -150,7 +151,7 @@ class warrior_classhall_to_skyhold : public CreatureScript
 
 								case 100:
 								{
-										pPlayer->CLOSE_GOSSIP_MENU();
+									CloseGossipMenuFor(player);
 								}break;
                                      
 						}
@@ -164,29 +165,29 @@ class demonhunter_teleport_vault_of_Warden : public CreatureScript
 public:
 	demonhunter_teleport_vault_of_Warden() : CreatureScript("demonhunter_teleport_vault_of_Warden") {}
 
-	bool OnGossipHello(Player * pPlayer, Creature * pCreature)
+		bool OnGossipHello(Player* player, Creature* creature)
 	{
-		pPlayer->ADD_GOSSIP_ITEM(4, "Teleport To Vault of Warden!", GOSSIP_SENDER_MAIN, 1);
-		pPlayer->ADD_GOSSIP_ITEM(4, "Exit", GOSSIP_SENDER_MAIN, 100);
-		pPlayer->PlayerTalkClass->SendGossipMenu(9425, pCreature->GetGUID());
+		AddGossipItemFor(player, 4, "Teleport To Vault of Warden!", GOSSIP_SENDER_MAIN, 1);
+		AddGossipItemFor(player, 4, "Exit", GOSSIP_SENDER_MAIN, 100);
+		player->PlayerTalkClass->SendGossipMenu(9425, creature->GetGUID());
 
 		return true;
 	}
 
-	bool OnGossipSelect(Player * pPlayer, Creature * pCreature, uint32 /*uiSender*/, uint32 uiAction)
+	bool OnGossipSelect(Player* player, Creature * creature, uint32 /*uiSender*/, uint32 uiAction)
 	{
-		pPlayer->PlayerTalkClass->ClearMenus();
+		player->PlayerTalkClass->ClearMenus();
 
-		switch (pPlayer->getClass())
+		switch (player->getClass())
 		{
 			case CLASS_DEMON_HUNTER:
 			{
-				pPlayer->CastSpell(pPlayer, TELEPORT_VAULTH_OF_WARDEN, true);
+				player->CastSpell(player, TELEPORT_VAULTH_OF_WARDEN, true);
 			}break;
 
 			case 100:
 			{
-				pPlayer->CLOSE_GOSSIP_MENU();
+				CloseGossipMenuFor(player);
 			}break;
 
 		}

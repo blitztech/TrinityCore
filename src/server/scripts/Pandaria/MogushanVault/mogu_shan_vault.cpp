@@ -535,8 +535,8 @@ public:
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_CHOICE_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-            player->SEND_GOSSIP_MENU(30003, creature->GetGUID());
+			AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_CHOICE_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+			SendGossipMenuFor(player, 30003, creature->GetGUID());
 
             return true;
         }
@@ -547,7 +547,7 @@ public:
 
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
             {
-                player->CLOSE_GOSSIP_MENU();
+				ClearGossipMenuFor(player);
                 creature->AI()->DoAction(ACTION_CONTINUE_ESCORT);
             }
 

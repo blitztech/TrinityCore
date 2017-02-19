@@ -133,7 +133,7 @@ public:
 
         bool OnGossipHello(Player* player, GameObject* go)
         {
-        	player->CLOSE_GOSSIP_MENU();
+			ClearGossipMenuFor(player);
 
         	if (used == false)
         	{
@@ -236,9 +236,9 @@ public:
 
 		bool OnGossipHello(Player* player, GameObject* go)
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Touch the statue.", GOSSIP_SENDER_MAIN, 1);
+			AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Touch the statue.", GOSSIP_SENDER_MAIN, 1);
 
-            player->SEND_GOSSIP_MENU(player->GetGossipTextId(go), go->GetGUID());
+			SendGossipMenuFor(player, player->GetGossipTextId(go), go->GetGUID());
 
             return true;
         }
@@ -246,7 +246,7 @@ public:
 		bool OnGossipSelect(Player* player, GameObject* go, uint32 /*sender*/, uint32 action)
         {
         	player->PlayerTalkClass->ClearMenus();
-        	player->CLOSE_GOSSIP_MENU();
+			ClearGossipMenuFor(player);
 
         	switch (action)
         	{

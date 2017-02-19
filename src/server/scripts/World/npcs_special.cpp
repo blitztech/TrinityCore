@@ -2285,7 +2285,7 @@ public:
 		if (player->getRace() == RACE_PANDAREN_NEUTRAL)
 		{
 			if (player->GetQuestStatus(31450) == QUEST_STATUS_INCOMPLETE)
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_CHOOSE_FACTION, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+				AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_CHOOSE_FACTION, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
 		}
 		player->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_EXP, creature->GetGUID());
 		return true;
