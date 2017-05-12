@@ -121,6 +121,9 @@ void SceneMgr::OnSceneCancel(uint32 sceneInstanceID)
         RemoveAurasDueToSceneId(sceneTemplate->SceneId);
 
     sScriptMgr->OnSceneCancel(GetPlayer(), sceneInstanceID, sceneTemplate);
+
+    if (sceneTemplate->PlaybackFlags & SCENEFLAG_CANCEL_AT_END)
+        CancelScene(sceneInstanceID, false);
 }
 
 void SceneMgr::OnSceneComplete(uint32 sceneInstanceID)
@@ -140,6 +143,9 @@ void SceneMgr::OnSceneComplete(uint32 sceneInstanceID)
         RemoveAurasDueToSceneId(sceneTemplate->SceneId);
 
     sScriptMgr->OnSceneComplete(GetPlayer(), sceneInstanceID, sceneTemplate);
+
+    if (sceneTemplate->PlaybackFlags & SCENEFLAG_CANCEL_AT_END)
+        CancelScene(sceneInstanceID, false);
 }
 
 bool SceneMgr::HasScene(uint32 sceneInstanceID, uint32 sceneScriptPackageId /*= 0*/) const
@@ -155,6 +161,18 @@ bool SceneMgr::HasScene(uint32 sceneInstanceID, uint32 sceneScriptPackageId /*= 
 void SceneMgr::AddInstanceIdToSceneMap(uint32 sceneInstanceID, SceneTemplate const* sceneTemplate)
 {
     _scenesByInstance[sceneInstanceID] = sceneTemplate;
+}
+
+void SceneMgr::CancelSceneBySceneId(uint32 sceneId)
+{
+    std::vector<uint32> instancesIds;
+
+    for (auto const& itr : _scenesByInstance)
+        if (itr.second->SceneId == sceneId)
+            instancesIds.push_back(itr.first);
+
+    for (uint32 sceneInstanceID : instancesIds)
+        CancelScene(sceneInstanceID);
 }
 
 void SceneMgr::CancelSceneByPackageId(uint32 sceneScriptPackageId)
